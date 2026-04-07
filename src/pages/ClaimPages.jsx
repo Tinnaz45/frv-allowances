@@ -1,8 +1,9 @@
 import { useState } from 'react'
 import { useClaims } from '../hooks/useClaims'
 import { RATES } from '../lib/supabase'
-import { ClaimRow, ClaimDetailSheet, EmptyState, fmtAUD, StationSelect } from '../components/UI'
+import { ClaimRow, ClaimDetailSheet, EmptyState, fmtAUD } from '../components/UI'
 import { useAuth } from '../hooks/useAuth'
+import DistrictStationSelect from '../components/DistrictStationSelect'
 
 const PLATOONS = ['A', 'B', 'C', 'D', 'Z']
 
@@ -117,8 +118,16 @@ export function RecallsPage() {
           </div>
         </div>
 
-        <StationSelect label="Rostered station" value={form.rosteredStnId} onChange={set('rosteredStnId')} />
-        <StationSelect label="Recall station" value={form.recallStnId} onChange={set('recallStnId')} required />
+        <DistrictStationSelect
+          label="Rostered station"
+          stationId={form.rosteredStnId ? Number(form.rosteredStnId) : ''}
+          onChange={(val) => setForm(f => ({ ...f, rosteredStnId: val }))}
+        />
+        <DistrictStationSelect
+          label="Recall station"
+          stationId={form.recallStnId ? Number(form.recallStnId) : ''}
+          onChange={(val) => setForm(f => ({ ...f, recallStnId: val }))}
+        />
 
         <div className="grid-2">
           <div className="field">
@@ -205,7 +214,11 @@ export function RetainPage() {
           </div>
         </div>
 
-        <StationSelect label="Station" value={form.stationId} onChange={set('stationId')} />
+        <DistrictStationSelect
+          label="Station"
+          stationId={form.stationId ? Number(form.stationId) : ''}
+          onChange={(val) => setForm(f => ({ ...f, stationId: val }))}
+        />
 
         <div className="grid-2">
           <div className="field">
@@ -313,8 +326,16 @@ export function StandbyPage() {
           </div>
         </div>
 
-        <StationSelect label="Rostered station" value={form.rosteredStnId} onChange={set('rosteredStnId')} />
-        <StationSelect label="Standby / M&D station" value={form.standbyStnId} onChange={set('standbyStnId')} required />
+        <DistrictStationSelect
+          label="Rostered station"
+          stationId={form.rosteredStnId ? Number(form.rosteredStnId) : ''}
+          onChange={(val) => setForm(f => ({ ...f, rosteredStnId: val }))}
+        />
+        <DistrictStationSelect
+          label="Standby / M&D station"
+          stationId={form.standbyStnId ? Number(form.standbyStnId) : ''}
+          onChange={(val) => setForm(f => ({ ...f, standbyStnId: val }))}
+        />
 
         <div className="grid-2">
           <div className="field">
@@ -411,7 +432,11 @@ export function SpoiltPage() {
           </div>
         </div>
 
-        <StationSelect label="Station (where meal was spoilt)" value={form.stationId} onChange={set('stationId')} required />
+        <DistrictStationSelect
+          label="Station (where meal was spoilt)"
+          stationId={form.stationId ? Number(form.stationId) : ''}
+          onChange={(val) => setForm(f => ({ ...f, stationId: val }))}
+        />
 
         <div className="grid-2">
           <div className="field">
@@ -424,7 +449,11 @@ export function SpoiltPage() {
           </div>
         </div>
 
-        <StationSelect label="Claim station (petty cash)" value={form.claimStnId} onChange={set('claimStnId')} />
+        <DistrictStationSelect
+          label="Claim station (petty cash)"
+          stationId={form.claimStnId ? Number(form.claimStnId) : ''}
+          onChange={(val) => setForm(f => ({ ...f, claimStnId: val }))}
+        />
       </FormCard>
 
       <ClaimList claims={spoilt} type="Spoilt" table="spoilt" markPaid={markPaid} deleteClaim={deleteClaim} />
