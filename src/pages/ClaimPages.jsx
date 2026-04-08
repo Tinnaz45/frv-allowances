@@ -118,16 +118,20 @@ export function RecallsPage() {
           </div>
         </div>
 
-        <DistrictStationSelect
-          label="Rostered station"
-          stationId={form.rosteredStnId ? Number(form.rosteredStnId) : ''}
-          onChange={(val) => setForm(f => ({ ...f, rosteredStnId: val }))}
-        />
-        <DistrictStationSelect
-          label="Recall station"
-          stationId={form.recallStnId ? Number(form.recallStnId) : ''}
-          onChange={(val) => setForm(f => ({ ...f, recallStnId: val }))}
-        />
+        <div className="grid-2">
+          <DistrictStationSelect
+            label="Rostered station"
+            stationId={form.rosteredStnId ? Number(form.rosteredStnId) : ''}
+            onChange={(val) => setForm(f => ({ ...f, rosteredStnId: val }))}
+          />
+        </div>
+        <div className="grid-2">
+          <DistrictStationSelect
+            label="Recall station"
+            stationId={form.recallStnId ? Number(form.recallStnId) : ''}
+            onChange={(val) => setForm(f => ({ ...f, recallStnId: val }))}
+          />
+        </div>
 
         <div className="grid-2">
           <div className="field">
@@ -214,11 +218,13 @@ export function RetainPage() {
           </div>
         </div>
 
-        <DistrictStationSelect
-          label="Station"
-          stationId={form.stationId ? Number(form.stationId) : ''}
-          onChange={(val) => setForm(f => ({ ...f, stationId: val }))}
-        />
+        <div className="grid-2">
+          <DistrictStationSelect
+            label="Station"
+            stationId={form.stationId ? Number(form.stationId) : ''}
+            onChange={(val) => setForm(f => ({ ...f, stationId: val }))}
+          />
+        </div>
 
         <div className="grid-2">
           <div className="field">
@@ -331,16 +337,20 @@ function StandbyForm({ claimType }) {
           </div>
         </div>
 
-        <DistrictStationSelect
-          label="Rostered station"
-          stationId={form.rosteredStnId ? Number(form.rosteredStnId) : ''}
-          onChange={(val) => setForm(f => ({ ...f, rosteredStnId: val }))}
-        />
-        <DistrictStationSelect
-          label={stnLabel}
-          stationId={form.standbyStnId ? Number(form.standbyStnId) : ''}
-          onChange={(val) => setForm(f => ({ ...f, standbyStnId: val }))}
-        />
+        <div className="grid-2">
+          <DistrictStationSelect
+            label="Rostered station"
+            stationId={form.rosteredStnId ? Number(form.rosteredStnId) : ''}
+            onChange={(val) => setForm(f => ({ ...f, rosteredStnId: val }))}
+          />
+        </div>
+        <div className="grid-2">
+          <DistrictStationSelect
+            label={stnLabel}
+            stationId={form.standbyStnId ? Number(form.standbyStnId) : ''}
+            onChange={(val) => setForm(f => ({ ...f, standbyStnId: val }))}
+          />
+        </div>
 
         <div className="field">
           <label>Distance to {label} stn (km, one way)</label>
@@ -437,11 +447,13 @@ export function SpoiltPage() {
           </div>
         </div>
 
-        <DistrictStationSelect
-          label="Station (where meal was spoilt)"
-          stationId={form.stationId ? Number(form.stationId) : ''}
-          onChange={(val) => setForm(f => ({ ...f, stationId: val }))}
-        />
+        <div className="grid-2">
+          <DistrictStationSelect
+            label="Station (where meal was spoilt)"
+            stationId={form.stationId ? Number(form.stationId) : ''}
+            onChange={(val) => setForm(f => ({ ...f, stationId: val }))}
+          />
+        </div>
 
         <div className="grid-2">
           <div className="field">
@@ -454,11 +466,13 @@ export function SpoiltPage() {
           </div>
         </div>
 
-        <DistrictStationSelect
-          label="Claim station (petty cash)"
-          stationId={form.claimStnId ? Number(form.claimStnId) : ''}
-          onChange={(val) => setForm(f => ({ ...f, claimStnId: val }))}
-        />
+        <div className="grid-2">
+          <DistrictStationSelect
+            label="Claim station (petty cash)"
+            stationId={form.claimStnId ? Number(form.claimStnId) : ''}
+            onChange={(val) => setForm(f => ({ ...f, claimStnId: val }))}
+          />
+        </div>
       </FormCard>
 
       <ClaimList claims={spoilt} type="Spoilt" table="spoilt" markPaid={markPaid} deleteClaim={deleteClaim} />
