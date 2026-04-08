@@ -11,6 +11,7 @@ create table if not exists public.profiles (
   station_id  integer,
   platoon     text check (platoon in ('A','B','C','D','Z')),
   home_dist_km numeric(6,1) default 0,
+  home_address text,
   employee_id text,
   created_at  timestamptz default now(),
   updated_at  timestamptz default now()

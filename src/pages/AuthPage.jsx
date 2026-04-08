@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { useAuth } from '../hooks/useAuth'
 
 export default function AuthPage() {
-  const { signIn, signUp } = useAuth()
+  const { signIn, signUp, resetPassword } = useAuth()
   const [mode, setMode] = useState('login')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -10,16 +10,26 @@ export default function AuthPage() {
   const [error, setError] = useState('')
   const [success, setSuccess] = useState('')
 
+  function switchMode(next) {
+    setMode(next)
+    setError('')
+    setSuccess('')
+  }
+
   async function handleSubmit(e) {
     e.preventDefault()
     setError(''); setSuccess(''); setLoading(true)
     if (mode === 'login') {
       const { error } = await signIn(email, password)
       if (error) setError(error.message)
-    } else {
+    } else if (mode === 'signup') {
       const { error } = await signUp(email, password)
       if (error) setError(error.message)
       else setSuccess('Check your email for a confirmation link.')
+    } else {
+      const { error } = await resetPassword(email)
+      if (error) setError(error.message)
+      else setSuccess('Password reset link sent — check your email.')
     }
     setLoading(false)
   }
@@ -31,7 +41,9 @@ export default function AuthPage() {
       <div className="auth-card">
         <h1>FRV Allowances</h1>
         <p className="auth-sub">
-          {mode === 'login' ? 'Sign in to your account' : 'Create a new account'}
+          {mode === 'login' ? 'Sign in to your account'
+            : mode === 'signup' ? 'Create a new account'
+            : 'Reset your password'}
         </p>
 
         {error && <div className="auth-error">{error}</div>}
@@ -55,24 +67,38 @@ export default function AuthPage() {
             />
           </div>
 
-          <div className="field">
-            <label htmlFor="password">Password</label>
-            <input
-              id="password"
-              type="password"
-              value={password}
-              onChange={e => setPassword(e.target.value)}
-              placeholder="••••••••"
-              required
-              autoComplete={mode === 'login' ? 'current-password' : 'new-password'}
-              minLength={8}
-            />
-          </div>
+          {mode !== 'forgot' && (
+            <div className="field">
+              <label htmlFor="password">Password</label>
+              <input
+                id="password"
+                type="password"
+                value={password}
+                onChange={e => setPassword(e.target.value)}
+                placeholder="••••••••"
+                required
+                autoComplete={mode === 'login' ? 'current-password' : 'new-password'}
+                minLength={8}
+              />
+              {mode === 'login' && (
+                <button
+                  type="button"
+                  className="btn btn-ghost"
+                  style={{ fontSize: '0.8rem', padding: '2px 0', alignSelf: 'flex-start', marginTop: 4 }}
+                  onClick={() => switchMode('forgot')}
+                >
+                  Forgot password?
+                </button>
+              )}
+            </div>
+          )}
 
           <button className="btn btn-primary btn-full" type="submit" disabled={loading}>
             {loading
               ? <span className="spinner" style={{ width: 16, height: 16, borderWidth: 2 }} />
-              : mode === 'login' ? 'Sign in' : 'Create account'
+              : mode === 'login' ? 'Sign in'
+              : mode === 'signup' ? 'Create account'
+              : 'Send reset link'
             }
           </button>
         </form>
@@ -81,11 +107,11 @@ export default function AuthPage() {
           <button
             className="btn btn-ghost"
             style={{ fontSize: '0.875rem' }}
-            onClick={() => { setMode(m => m === 'login' ? 'signup' : 'login'); setError(''); setSuccess('') }}
+            onClick={() => switchMode(mode === 'signup' ? 'login' : mode === 'forgot' ? 'login' : 'signup')}
           >
             {mode === 'login'
               ? "Don't have an account? Sign up"
-              : 'Already have an account? Sign in'
+              : 'Back to sign in'
             }
           </button>
         </div>

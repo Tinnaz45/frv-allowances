@@ -8,7 +8,7 @@ export function ProfilePage() {
   const { profile, updateProfile, signOut, session } = useAuth()
   const [form, setForm] = useState({
     first_name: '', last_name: '', station_id: '',
-    platoon: 'C', home_dist_km: '', employee_id: '',
+    platoon: 'C', home_dist_km: '', home_address: '', employee_id: '',
   })
   const [saving, setSaving] = useState(false)
   const [saved, setSaved] = useState(false)
@@ -22,6 +22,7 @@ export function ProfilePage() {
         station_id: profile.station_id || '',
         platoon: profile.platoon || 'C',
         home_dist_km: profile.home_dist_km || '',
+        home_address: profile.home_address || '',
         employee_id: profile.employee_id || '',
       })
     }
@@ -78,6 +79,17 @@ export function ProfilePage() {
               <label>Last name</label>
               <input type="text" value={form.last_name} onChange={set('last_name')} placeholder="Morton" autoComplete="family-name" />
             </div>
+          </div>
+
+          <div className="field">
+            <label>Home address</label>
+            <input
+              type="text"
+              value={form.home_address}
+              onChange={set('home_address')}
+              placeholder="123 Example St, Suburb VIC 3000"
+              autoComplete="street-address"
+            />
           </div>
 
           <DistrictStationSelect

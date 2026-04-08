@@ -53,12 +53,16 @@ export function AuthProvider({ children }) {
     return supabase.auth.signUp({ email, password })
   }
 
+  async function resetPassword(email) {
+    return supabase.auth.resetPasswordForEmail(email)
+  }
+
   async function signOut() {
     await supabase.auth.signOut()
   }
 
   return (
-    <AuthContext.Provider value={{ session, profile, loading, signIn, signUp, signOut, updateProfile, fetchProfile }}>
+    <AuthContext.Provider value={{ session, profile, loading, signIn, signUp, signOut, updateProfile, fetchProfile, resetPassword }}>
       {children}
     </AuthContext.Provider>
   )
