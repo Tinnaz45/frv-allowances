@@ -44,7 +44,7 @@ function AppShell() {
         </h1>
         {page === 'dashboard' && (
           <span style={{ fontSize: '0.75rem', color: 'var(--text-3)', fontFamily: 'var(--mono)' }}>
-            FRV Allowances
+            Allowance Tracker
           </span>
         )}
       </div>

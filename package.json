@@ -1,5 +1,5 @@
 {
-  "name": "frv-allowances",
+  "name": "fire-allowance-tracker",
   "version": "1.0.0",
   "private": true,
   "dependencies": {
@@ -24,8 +24,8 @@
     "development": ["last 1 chrome version", "last 1 firefox version", "last 1 safari version"]
   },
   "manifest": {
-    "short_name": "FRV Allowances",
-    "name": "FRV Allowance Tracker",
+    "short_name": "Allowance",
+    "name": "Fire Allowance Tracker",
     "start_url": ".",
     "display": "standalone",
     "theme_color": "#0f172a",
