@@ -63,7 +63,7 @@ The easiest free option is **Vercel**:
 2. Go to your Vercel URL.
 3. Tap the **Share** button (box with arrow up).
 4. Scroll down and tap **Add to Home Screen**.
-5. Name it "Fire Allowance" and tap **Add**.
+5. Name it "Allowance" and tap **Add**.
 
 It now behaves like a native app — full screen, your icon, no browser bars.
 
