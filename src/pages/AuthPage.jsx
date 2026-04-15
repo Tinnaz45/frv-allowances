@@ -39,7 +39,7 @@ export default function AuthPage() {
       <div className="auth-logo">🚒</div>
 
       <div className="auth-card">
-        <h1>FRV Allowances</h1>
+        <h1>Fire Allowance Tracker</h1>
         <p className="auth-sub">
           {mode === 'login' ? 'Sign in to your account'
             : mode === 'signup' ? 'Create a new account'

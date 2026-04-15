@@ -1,6 +1,6 @@
-# FRV Allowance Tracker
+# Fire Allowance Tracker
 
-A mobile-first Progressive Web App (PWA) for tracking FRV allowance claims across Recalls, Retain, Standby/M&D, and Spoilt/Delayed meals. Works as a home-screen app on iPhone, and in any browser.
+A mobile-first Progressive Web App (PWA) for tracking fire allowance claims across Recalls, Retain, Standby/M&D, and Spoilt/Delayed meals. Works as a home-screen app on iPhone, and in any browser.
 
 ---
 
@@ -9,7 +9,7 @@ A mobile-first Progressive Web App (PWA) for tracking FRV allowance claims acros
 ### Step 1 — Set up Supabase (free)
 
 1. Go to https://supabase.com and create a free account.
-2. Click **New project**, give it a name (e.g. `frv-allowances`), set a database password, choose a region (Australia - Sydney if available).
+2. Click **New project**, give it a name (e.g. `fire-allowance-tracker`), set a database password, choose a region (Australia - Sydney if available).
 3. Wait ~2 minutes for your project to spin up.
 4. Go to the **SQL Editor** (left sidebar).
 5. Paste the entire contents of `supabase-schema.sql` and click **Run**.
@@ -53,7 +53,7 @@ The easiest free option is **Vercel**:
 3. In the project settings, add your environment variables:
    - `REACT_APP_SUPABASE_URL`
    - `REACT_APP_SUPABASE_ANON_KEY`
-4. Click **Deploy**. Vercel gives you a URL like `https://frv-allowances.vercel.app`.
+4. Click **Deploy**. Vercel gives you a URL like `https://fire-allowance-tracker.vercel.app`.
 
 ---
 
@@ -63,7 +63,7 @@ The easiest free option is **Vercel**:
 2. Go to your Vercel URL.
 3. Tap the **Share** button (box with arrow up).
 4. Scroll down and tap **Add to Home Screen**.
-5. Name it "FRV Claims" and tap **Add**.
+5. Name it "Fire Allowance" and tap **Add**.
 
 It now behaves like a native app — full screen, your icon, no browser bars.
 
@@ -99,7 +99,7 @@ These are hardcoded in `src/lib/supabase.js` under `RATES`. Update them there wh
 ## Project structure
 
 ```
-frv-allowances/
+fire-allowance-tracker/
 ├── public/
 │   ├── index.html          # PWA shell with iOS meta tags
 │   └── manifest.json       # PWA manifest (icon, display, theme)

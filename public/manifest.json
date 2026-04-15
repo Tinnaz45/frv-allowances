@@ -1,6 +1,6 @@
 {
-  "short_name": "FRV Claims",
-  "name": "FRV Allowance Tracker",
+  "short_name": "Fire Allowance",
+  "name": "Fire Allowance Tracker",
   "icons": [
     {
       "src": "favicon.ico",
@@ -24,5 +24,5 @@
   "orientation": "portrait",
   "theme_color": "#0f172a",
   "background_color": "#0f172a",
-  "description": "Track and manage FRV allowance claims across recalls, retain, standby/M&D, and spoilt/delayed meals."
+  "description": "Track and manage fire allowance claims across recalls, retain, standby/M&D, and spoilt/delayed meals."
 }

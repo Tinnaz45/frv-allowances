@@ -1,5 +1,5 @@
 -- ═══════════════════════════════════════════════════════════════
--- FRV ALLOWANCES — SUPABASE SCHEMA
+-- FIRE ALLOWANCE TRACKER — SUPABASE SCHEMA
 -- Run this in your Supabase SQL editor to set up the database.
 -- ═══════════════════════════════════════════════════════════════
 
