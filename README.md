@@ -139,6 +139,25 @@ fire-allowance-tracker/
 
 ---
 
+## Deployment Workflow
+
+| Branch | Purpose |
+|---|---|
+| `dev` | Development and testing — all features land here first |
+| `main` | Production — only receives changes via pull request from `dev` |
+
+**Process:**
+
+1. All features and fixes are committed to `dev`
+2. Push `dev` to trigger a Vercel preview deployment
+3. Test the Vercel preview URL thoroughly
+4. Only after verification: open a pull request from `dev` → `main`
+5. Merge to `main` triggers the production Vercel deployment
+
+**Never push directly to `main`.** Direct pushes are blocked by branch protection.
+
+---
+
 ## Future features to add
 
 - Push notifications when a claim is approaching a deadline
