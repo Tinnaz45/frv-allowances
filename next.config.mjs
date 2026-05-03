@@ -1,3 +1,5 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {}
+const nextConfig = {
+    pageExtensions: ['js', 'ts', 'tsx']
+}
 export default nextConfig
