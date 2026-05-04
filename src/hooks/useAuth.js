@@ -61,16 +61,24 @@ export function useAuth() {
 
   async function signUp(email, password) {
     try {
-      const { data, error } = await supabase.auth.signUp({ email, password })
+      console.log("Attempting sign up...")
+      const { data, error } = await supabase.auth.signUp({
+        email,
+        password,
+      })
+      console.log("Signup response:", { data, error })
       if (error) {
-        console.error('Sign up error:', error.message)
         throw error
       }
       return data
     } catch (err) {
-      console.error('Unexpected sign up error:', err)
+      console.error("Sign up error:", err)
       throw err
     }
+  }
+
+  async function signOut() {
+    await supabase.auth.signOut()
   }
 
   async function resetPassword(email) {
@@ -94,6 +102,7 @@ export function useAuth() {
     isAuthenticated: !!user,
     signIn,
     signUp,
+    signOut,
     resetPassword,
   }
 }

@@ -1,9 +1,10 @@
 import { useState } from 'react'
 import { useAuth } from '../hooks/useAuth'
+import { supabase } from '../supabaseClient'
 
 export default function AuthPage() {
-  const { signIn, signUp, resetPassword } = useAuth()
-  const [mode, setMode] = useState('login')
+  const { signIn } = useAuth()
+  const [mode, setMode] = useState('signin')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [loading, setLoading] = useState(false)
@@ -20,9 +21,26 @@ export default function AuthPage() {
     e.preventDefault()
     setLoading(true)
     setError(null)
+    setSuccess('')
+
     try {
       if (mode === "signup") {
-        await signUp(email, password)
+        const { data, error } = await supabase.auth.signUp({
+          email,
+          password,
+        })
+        if (error) {
+          setError(error.message)
+          return
+        }
+        // SUCCESS CASE (even if no session — email confirmation pending)
+        if (data?.user) {
+          setError(null)
+          setSuccess("Check your email to confirm your account")
+          return
+        }
+        // fallback
+        setError("Signup failed unexpectedly")
       } else {
         await signIn(email, password)
       }
@@ -40,7 +58,7 @@ export default function AuthPage() {
       <div className="auth-card">
         <h1>Fire Allowance Tracker</h1>
         <p className="auth-sub">
-          {mode === 'login' ? 'Sign in to your account'
+          {mode === 'signin' ? 'Sign in to your account'
             : mode === 'signup' ? 'Create a new account'
             : 'Reset your password'}
         </p>
@@ -76,10 +94,10 @@ export default function AuthPage() {
                 onChange={e => setPassword(e.target.value)}
                 placeholder="••••••••"
                 required
-                autoComplete={mode === 'login' ? 'current-password' : 'new-password'}
+                autoComplete={mode === 'signin' ? 'current-password' : 'new-password'}
                 minLength={8}
               />
-              {mode === 'login' && (
+              {mode === 'signin' && (
                 <button
                   type="button"
                   className="btn btn-ghost"
@@ -95,20 +113,21 @@ export default function AuthPage() {
           <button className="btn btn-primary btn-full" type="submit" disabled={loading}>
             {loading
               ? <span className="spinner" style={{ width: 16, height: 16, borderWidth: 2 }} />
-              : mode === 'login' ? 'Sign in'
+              : mode === 'signin' ? 'Sign in'
               : mode === 'signup' ? 'Create account'
               : 'Send reset link'
             }
           </button>
+          <p style={{ color: "white" }}>Mode: {mode}</p>
         </form>
 
         <div style={{ textAlign: 'center', marginTop: 16 }}>
           <button
             className="btn btn-ghost"
             style={{ fontSize: '0.875rem' }}
-            onClick={() => switchMode(mode === 'signup' ? 'login' : mode === 'forgot' ? 'login' : 'signup')}
+            onClick={() => switchMode(mode === 'signup' ? 'signin' : mode === 'forgot' ? 'signin' : 'signup')}
           >
-            {mode === 'login'
+            {mode === 'signin'
               ? "Don't have an account? Sign up"
               : 'Back to sign in'
             }
