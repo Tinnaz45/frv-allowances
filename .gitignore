@@ -6,7 +6,11 @@
 # testing
 /coverage
 
-# production
+# next.js
+/.next/
+/out/
+
+# production build
 /build
 
 # env files — copy .env.example to .env.local and fill in your values
@@ -14,6 +18,13 @@
 .env.development.local
 .env.test.local
 .env.production.local
+
+# vercel
+.vercel
+
+# typescript
+*.tsbuildinfo
+next-env.d.ts
 
 # misc
 .DS_Store

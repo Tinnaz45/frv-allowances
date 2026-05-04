@@ -1,6 +1,6 @@
 # Fire Allowance Tracker
 
-A mobile-first Progressive Web App (PWA) for tracking fire allowance claims across Recalls, Retain, Standby/M&D, and Spoilt/Delayed meals. Works as a home-screen app on iPhone, and in any browser.
+A mobile-first web app for tracking fire allowance claims across Recalls, Retain, Standby/M&D, and Spoilt/Delayed meals. Built with Next.js 15 and Supabase.
 
 ---
 
@@ -25,8 +25,9 @@ A mobile-first Progressive Web App (PWA) for tracking fire allowance claims acro
 2. Fill in your Supabase credentials:
 
 ```
-REACT_APP_SUPABASE_URL=https://your-project-id.supabase.co
-REACT_APP_SUPABASE_ANON_KEY=your-anon-key-here
+NEXT_PUBLIC_SUPABASE_URL=https://your-project-id.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key-here
+SUPABASE_SERVICE_ROLE_KEY=your-service-role-key-here
 ```
 
 ---
@@ -37,10 +38,10 @@ Make sure you have Node.js installed (v18+). Then:
 
 ```bash
 npm install
-npm start
+npm run dev
 ```
 
-The app opens at http://localhost:3000. Create an account, fill in your profile, and start adding claims.
+The app opens at http://localhost:3001. Create an account, fill in your profile, and start adding claims.
 
 ---
 
@@ -51,8 +52,9 @@ The easiest free option is **Vercel**:
 1. Push this folder to a GitHub repository.
 2. Go to https://vercel.com, sign in with GitHub, click **New Project**, and import your repo.
 3. In the project settings, add your environment variables:
-   - `REACT_APP_SUPABASE_URL`
-   - `REACT_APP_SUPABASE_ANON_KEY`
+   - `NEXT_PUBLIC_SUPABASE_URL`
+   - `NEXT_PUBLIC_SUPABASE_ANON_KEY`
+   - `SUPABASE_SERVICE_ROLE_KEY`
 4. Click **Deploy**. Vercel gives you a URL like `https://fire-allowance-tracker.vercel.app`.
 
 ---
@@ -64,8 +66,6 @@ The easiest free option is **Vercel**:
 3. Tap the **Share** button (box with arrow up).
 4. Scroll down and tap **Add to Home Screen**.
 5. Name it "Allowance" and tap **Add**.
-
-It now behaves like a native app — full screen, your icon, no browser bars.
 
 ---
 
@@ -83,7 +83,7 @@ Everyone's data is completely separate — each person only ever sees their own 
 
 ## Allowance rates
 
-These are hardcoded in `src/lib/supabase.js` under `RATES`. Update them there when rates change.
+Rates are managed in the database / Supabase. Update them in the relevant config when rates change.
 
 | Allowance | Rate |
 |---|---|
@@ -100,30 +100,15 @@ These are hardcoded in `src/lib/supabase.js` under `RATES`. Update them there wh
 
 ```
 fire-allowance-tracker/
-├── public/
-│   ├── index.html          # PWA shell with iOS meta tags
-│   └── manifest.json       # PWA manifest (icon, display, theme)
-├── src/
-│   ├── lib/
-│   │   └── supabase.js     # Supabase client, STATIONS list, RATES
-│   ├── hooks/
-│   │   ├── useAuth.js      # Auth context (sign in, sign up, profile)
-│   │   └── useClaims.js    # All claim CRUD operations
-│   ├── components/
-│   │   ├── UI.jsx          # Shared components (ClaimRow, badges, sheets)
-│   │   └── BottomNav.jsx   # iOS-style tab bar
-│   ├── pages/
-│   │   ├── AuthPage.jsx    # Login / sign up
-│   │   ├── Dashboard.jsx   # Home screen with stats + recent claims
-│   │   ├── ClaimPages.jsx  # Recalls, Retain, Standby, Spoilt forms + lists
-│   │   └── ProfilePage.jsx # Profile editor + allowance rates + sign out
-│   ├── styles/
-│   │   └── global.css      # Full design system (dark theme, mobile-first)
-│   ├── App.jsx             # Root app with auth guard + navigation
-│   └── index.js            # React entry point
-├── supabase-schema.sql     # Run this in Supabase SQL editor once
-├── .env.example            # Copy to .env.local and add your keys
-└── package.json
+├── next-app/                   # Legacy staging folder (no longer used)
+├── app/                        # Next.js App Router pages
+├── lib/                        # Supabase client, utilities
+├── public/                     # Static assets (if present)
+├── supabase-schema.sql         # Run this in Supabase SQL editor once
+├── vercel.json                 # Vercel deployment config
+├── package.json                # Next.js 15 dependencies
+├── .env.example                # Copy to .env.local and add your keys
+└── next.config.js              # Next.js configuration
 ```
 
 ---
@@ -132,9 +117,7 @@ fire-allowance-tracker/
 
 - All work happens on the `dev` branch — never commit directly to `main`
 - After changes: run `npm run build` and fix any errors
-- If tests exist: run `npm test -- --watchAll=false` and fix failures
 - Only merge `dev → main` when the build is clean
-- If anything breaks: revert in `dev`, do not merge
 - Full workflow details: see [docs/WORKFLOW.md](docs/WORKFLOW.md)
 
 ---

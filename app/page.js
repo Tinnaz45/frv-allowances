@@ -1,13 +1,5 @@
-'use client'
+import { redirect } from 'next/navigation'
 
-import dynamicImport from 'next/dynamic'
-
-export const dynamic = 'force-dynamic'
-
-const App = dynamicImport(() => import('../src/App'), {
-  ssr: false,
-})
-
-export default function Page() {
-  return <App />
+export default function Home() {
+  redirect('/login')
 }
