@@ -1,99 +1,49 @@
-import { createContext, useContext, useEffect, useState } from 'react'
+'use client'
+import { useEffect, useState } from 'react'
 
-const AuthContext = createContext(null)
-
-export function AuthProvider({ children }) {
+export function useAuth() {
+  const [user, setUser] = useState(null)
   const [session, setSession] = useState(null)
-  const [profile, setProfile] = useState(null)
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    if (typeof window === 'undefined') {
-      setLoading(false)
-      return
+    let mounted = true
+
+    async function load() {
+      try {
+        if (typeof window === 'undefined') return
+
+        const { createClient } = await import('@supabase/supabase-js')
+
+        const supabase = createClient(
+          process.env.NEXT_PUBLIC_SUPABASE_URL,
+          process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+        )
+
+        const { data } = await supabase.auth.getSession()
+
+        if (!mounted) return
+
+        setSession(data?.session ?? null)
+        setUser(data?.session?.user ?? null)
+      } catch (e) {
+        console.error('Auth load failed:', e)
+      } finally {
+        if (mounted) setLoading(false)
+      }
     }
 
-    let unsubscribe
-
-    import('../lib/supabase').then(({ supabase }) => {
-      if (!supabase) {
-        setLoading(false)
-        return
-      }
-
-      supabase.auth.getSession().then(({ data }) => {
-        const s = data?.session ?? null
-        setSession(s)
-        if (s) fetchProfile(supabase, s.user.id)
-        else setLoading(false)
-      })
-
-      const { data } = supabase.auth.onAuthStateChange((_event, s) => {
-        setSession(s ?? null)
-        if (s) fetchProfile(supabase, s.user.id)
-        else { setProfile(null); setLoading(false) }
-      })
-
-      unsubscribe = data?.subscription?.unsubscribe
-    })
+    load()
 
     return () => {
-      if (unsubscribe) unsubscribe()
+      mounted = false
     }
   }, [])
 
-  async function fetchProfile(supabase, userId) {
-    const { data } = await supabase
-      .from('profiles')
-      .select('*')
-      .eq('id', userId)
-      .single()
-    setProfile(data)
-    setLoading(false)
+  return {
+    user,
+    session,
+    loading,
+    isAuthenticated: !!user
   }
-
-  async function updateProfile(updates) {
-    const { supabase } = await import('../lib/supabase')
-    if (!supabase) return { data: null, error: new Error('Supabase not configured') }
-    const { data, error } = await supabase
-      .from('profiles')
-      .update(updates)
-      .eq('id', session.user.id)
-      .select()
-      .single()
-    if (!error) setProfile(data)
-    return { data, error }
-  }
-
-  async function signIn(email, password) {
-    const { supabase } = await import('../lib/supabase')
-    if (!supabase) return { error: new Error('Supabase not configured') }
-    return supabase.auth.signInWithPassword({ email, password })
-  }
-
-  async function signUp(email, password) {
-    const { supabase } = await import('../lib/supabase')
-    if (!supabase) return { error: new Error('Supabase not configured') }
-    return supabase.auth.signUp({ email, password })
-  }
-
-  async function resetPassword(email) {
-    const { supabase } = await import('../lib/supabase')
-    if (!supabase) return { error: new Error('Supabase not configured') }
-    return supabase.auth.resetPasswordForEmail(email)
-  }
-
-  async function signOut() {
-    const { supabase } = await import('../lib/supabase')
-    if (!supabase) return
-    await supabase.auth.signOut()
-  }
-
-  return (
-    <AuthContext.Provider value={{ session, profile, loading, signIn, signUp, signOut, updateProfile, fetchProfile, resetPassword }}>
-      {children}
-    </AuthContext.Provider>
-  )
 }
-
-export const useAuth = () => useContext(AuthContext)
