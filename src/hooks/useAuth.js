@@ -41,10 +41,6 @@ export function useAuth() {
     }
   }, [])
 
-  return {
-    user,
-    session,
-    loading,
-    isAuthenticated: !!user
-  }
-}
+  async function signIn(email, password) {
+    try {
+      const { data, error }
