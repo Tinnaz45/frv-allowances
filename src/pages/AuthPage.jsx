@@ -16,22 +16,17 @@ export default function AuthPage() {
     setSuccess('')
   }
 
-  async function handleSubmit(e) {
+  const handleSubmit = async (e) => {
     e.preventDefault()
-    setError(''); setSuccess(''); setLoading(true)
-    if (mode === 'login') {
-      const { error } = await signIn(email, password)
-      if (error) setError(error.message)
-    } else if (mode === 'signup') {
-      const { error } = await signUp(email, password)
-      if (error) setError(error.message)
-      else setSuccess('Check your email for a confirmation link.')
-    } else {
-      const { error } = await resetPassword(email)
-      if (error) setError(error.message)
-      else setSuccess('Password reset link sent — check your email.')
+    setLoading(true)
+    setError(null)
+    try {
+      await signIn(email, password)
+    } catch (err) {
+      setError(err.message || "Login failed")
+    } finally {
+      setLoading(false)
     }
-    setLoading(false)
   }
 
   return (

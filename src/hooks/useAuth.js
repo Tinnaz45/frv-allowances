@@ -41,10 +41,59 @@ export function useAuth() {
     }
   }, [])
 
+  async function signIn(email, password) {
+    try {
+      console.log("Attempting sign in...")
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      })
+      console.log("Supabase response:", { data, error })
+      if (error) {
+        throw error
+      }
+      return data
+    } catch (err) {
+      console.error("Sign in error:", err)
+      throw err
+    }
+  }
+
+  async function signUp(email, password) {
+    try {
+      const { data, error } = await supabase.auth.signUp({ email, password })
+      if (error) {
+        console.error('Sign up error:', error.message)
+        throw error
+      }
+      return data
+    } catch (err) {
+      console.error('Unexpected sign up error:', err)
+      throw err
+    }
+  }
+
+  async function resetPassword(email) {
+    try {
+      const { data, error } = await supabase.auth.resetPasswordForEmail(email)
+      if (error) {
+        console.error('Reset password error:', error.message)
+        throw error
+      }
+      return data
+    } catch (err) {
+      console.error('Unexpected reset password error:', err)
+      throw err
+    }
+  }
+
   return {
     user,
     session,
     loading,
-    isAuthenticated: !!user
+    isAuthenticated: !!user,
+    signIn,
+    signUp,
+    resetPassword,
   }
 }
